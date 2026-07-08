@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ROLL COLOR DICE 🎲 | Color Dice & Wheel Game</title>
+    <meta name="description" content="Play Roll Color Dice — a fun online color dice and wheel game! Roll the dice, spin the wheel, and enjoy Light or Dark mode in one exciting perya-inspired experience.">
+    <meta name="keywords" content="roll color dice, online dice, color game, perya game, wheel of names, light or dark wheel, monyun dice, color dice, roll dice">
+    <meta name="author" content="G Perya">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="pic/gperya.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #3399ff;
+            --light-blue: #66b3ff;
+            --dark-blue: #0066cc;
+            --background-start: #3e6d9d;
+            --background-end: #1a3a5a;
+            --white: #ffffff;
+            --shadow-dark: rgba(0, 0, 0, 0.4);
+            --shadow-light: rgba(255, 255, 255, 0.8);
+
+            /* Gelber Button */
+            --button-yellow: #ffd400;
+            --button-yellow-dark: #f2b800;
+        }
+
+        body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Luckiest Guy', cursive;
+    text-align: center;
+    padding-bottom: 50px;
+
+    background: url("ChatGPT Image 27. Juni 2026, 19_14_28.png") center center / cover no-repeat fixed;
+}
+
+        .top-header {
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .top-logo {
+            width: 220px;
+            height: auto;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 4px 8px var(--shadow-dark));
+        }
+
+        .top-tagline {
+            font-size: 32px;
+            color: var(--white);
+            text-shadow: 4px 4px 0 var(--dark-blue), 6px 6px 10px var(--shadow-dark);
+            margin-top: 5px;
+            -webkit-text-stroke: 1px var(--dark-blue);
+        }
+
+        .wrapper {
+            width: 90%;
+            max-width: 700px;
+            padding: 20px 20px;
+            margin: 20px auto;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,.18);
+            background-color: rgba(255,255,255,0.04);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow:0 10px 30px rgba(0,0,0,.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title {
+            font-size: 44px;
+            color: var(--white);
+            text-shadow: 6px 6px 0 var(--dark-blue), 8px 8px 10px var(--shadow-dark);
+            margin-bottom: 25px;
+            -webkit-text-stroke: 1px var(--dark-blue);
+            line-height: 1.1;
+        }
+
+        .dropdown-container{
+display:flex;
+gap:12px;
+justify-content:center;
+align-items:center;
+flex-wrap:nowrap;
+margin-bottom:30px;
+}
+.dropdown-container select{
+flex:1;
+max-width:210px;
+min-width:180px;
+}
+@media (max-width:768px){
+.dropdown-container{
+flex-wrap:wrap;
+}
+}
+
+        select {
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 24px;
+            padding: 12px 20px;
+            border: 4px solid var(--primary-blue);
+            border-radius: 10px;
+            background-color: var(--white);
+            color: var(--dark-blue);
+            cursor: pointer;
+            width: 325px;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%230066cc%22%20d%3D%22M287%2069.4l-14.7-14.7a10%2010%200%2000-14.1%200L146.2%20188.8%2034.2%2054.7a10%2010%200%2000-14.1%200L5.4%2069.4a10%2010%200%2000%200%2014.1l133.5%20133.5a10%2010%200%200014.1%200L287%2083.5a10%2010%200%20000-14.1z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 15px auto;
+            font-weight: bold;
+        }
+
+        button {
+            background: linear-gradient(to bottom, #ffe24d, var(--button-yellow));
+            color: #ffffff;
+            font-family: 'Luckiest Guy', cursive;
+            padding: 15px 50px;
+            font-size: 32px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 4px solid var(--white);
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0px 8px 15px var(--shadow-dark), 0px -4px 8px rgba(255,255,255,0.45) inset;
+            transition: all 0.1s ease-in-out;
+            -webkit-text-stroke: 1px #c28a00;
+            width: 93%;
+            display: inline-block;
+            text-align: center;
+            height: auto;
+        }
+
+        button:hover {
+            box-shadow: 0px 4px 10px var(--shadow-dark), 0px -2px 5px rgba(255,255,255,0.35) inset;
+            transform: translateY(2px);
+        }
+
+        .pressed {
+            animation: press-button 0.2s ease-in-out;
+            box-shadow: 0px 2px 5px var(--shadow-dark) inset, 0px 1px 3px var(--shadow-light);
+            transform: translateY(4px);
+        }
+
+        @keyframes press-button {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.92); }
+            100% { transform: scale(1); }
+        }
+
+        .dice-result {
+            margin: 20px auto;
+            padding: 10px;
+            width: 90%;
+            max-width: 650px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            min-height: 90px;
+        }
+
+        .color-block {
+            width: 90px;
+            height: 90px;
+            border-radius: 25px;
+            border: 10px solid var(--white);
+            position: relative;
+            background-color: #e0e0e0;
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.3), -4px -4px 10px var(--shadow-light);
+            transition: background-color 0.3s ease-in-out, transform 0.1s;
+            animation: none;
+            transform-style: preserve-3d;
+        }
+
+        .rolling-dice {
+            animation: shake-dice 0.1s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        @keyframes shake-dice {
+            0%, 100% { transform: translate(0, 0) rotate3d(0,0,0,0deg); }
+            25% { transform: translate(-3px, 3px) rotate3d(1,0,0,10deg); }
+            50% { transform: translate(3px, -3px) rotate3d(0,1,0,-10deg); }
+            75% { transform: translate(-3px, -3px) rotate3d(0,0,1,5deg); }
+        }
+
+        .dot {
+            width: 18px;
+            height: 18px;
+            background-color: var(--white);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--white);
+        }
+
+        .wheel-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 30px 0;
+            margin-bottom: 0px;
+        }
+
+        .wheel-container-with-pointer {
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-right: 0;
+        }
+
+        .wheel-container-with-pointer::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 25px solid transparent;
+            border-bottom: 25px solid transparent;
+            border-right: 40px solid var(--primary-blue);
+            filter: drop-shadow(0 3px 10px var(--shadow-dark));
+            z-index: 100;
+        }
+
+        .single-wheel-container {
+            width: 90%;
+            max-width: 380px;
+            height: 380px;
+            aspect-ratio: 1/1;
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            border: 20px solid var(--white);
+            box-shadow: 0 0 30px var(--shadow-dark), inset 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #ccc;
+            transition: transform 2.0s cubic-bezier(0.3, 1.5, 0.5, 1.0);
+            transform: rotate(0deg);
+        }
+
+        .segment-label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform-origin: 50% 50%;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 40px;
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.7);
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .segment-label span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(-130px) rotate(-90deg);
+            white-space: nowrap;
+            text-align: center;
+            -webkit-text-stroke: 1px rgba(0,0,0,0.5);
+        }
+
+        #winnerText {
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 38px;
+            color: var(--primary-blue);
+            text-shadow: none;
+            z-index: 50;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            white-space: nowrap;
+            margin-top: 25px;
+            min-height: 50px;
+            font-weight: bold;
+        }
+
+        .winner-text-visible { opacity: 1 !important; }
+
+        .winner-text-box {
+            background-color: var(--white);
+            border: 5px solid var(--primary-blue);
+            border-radius: 15px;
+            padding: 10px 30px;
+            box-shadow: 0px 6px 15px var(--shadow-dark);
+            color: var(--dark-blue);
+            text-shadow: none;
+            display: inline-block;
+        }
+
+        .color-container {
+            font-family: sans-serif;
+            width: 90%;
+            max-width: 650px;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .color-info {
+            font-size: 16px;
+            color: var(--white);
+            font-weight: normal;
+        }
+
+        /* KLEINES FELD UNTEN RECHTS */
+        .exclude-panel { display:none;
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            width: 220px;
+            max-width: 220px;
+            margin-top: 0;
+            background: rgba(0, 0, 0, 0.45);
+            border: 2px solid rgba(255,255,255,0.25);
+            border-radius: 12px;
+            padding: 10px;
+            box-sizing: border-box;
+            z-index: 999;
+            backdrop-filter: blur(4px);
+        }
+
+        .exclude-title {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+
+        #excludeContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 6px;
+        }
+
+        #excludeContainer label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 8px;
+            padding: 4px 6px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        #excludeContainer input[type="checkbox"] {
+            transform: scale(0.9);
+            cursor: pointer;
+            margin: 0;
+        }
+
+        #excludeContainer span {
+            padding: 2px 5px;
+            border-radius: 6px;
+            font-size: 10px;
+        }
+
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150%;
+            background: url('pic/background.png') repeat;
+            background-size: 35% auto;
+            opacity: 0.85;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .bg-overlay-2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150%;
+            background: url('pic/light.png') no-repeat;
+            background-size: 125% auto;
+            opacity: 0.75;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hidden-h1 {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        .intro {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 32px;
+            }
+
+            .top-tagline {
+                font-size: 24px;
+            }
+
+            select {
+                width: 100%;
+                max-width: 325px;
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 26px;
+            }
+
+            .color-block {
+                width: 70px;
+                height: 70px;
+                border-width: 8px;
+            }
+
+            .exclude-panel { display:none;
+                width: 180px;
+                max-width: 180px;
+                bottom: 8px;
+                right: 8px;
+                padding: 8px;
+            }
+
+            .exclude-title {
+                font-size: 12px;
+            }
+
+            #excludeContainer label {
+                font-size: 10px;
+                padding: 3px 5px;
+            }
+
+            #excludeContainer span {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="hidden-h1">ROLL COLOR DICE 🎲 — Online Color Dice and Wheel Game</h1>
+
+    <p class="intro">
+        Welcome to <strong>Roll Color Dice</strong> — the ultimate online color dice and wheel game inspired by the classic perya! 🎲
+        Test your luck by rolling the dice or spinning the Light or Dark wheel.
+        Simple, fun, and free to play anytime — no downloads needed!
+    </p>
+
+    <header class="top-header">
+        <img src="pic/gperya.png" alt="Roll Color Dice Logo" class="top-logo">
+        <div class="top-tagline">COLOR GAME & LIGHT OR DARK</div>
+    </header>
+
+    <div class="wrapper">
+        <div class="title">ROLL COLOR DICE</div>
+
+        <div class="dropdown-container">
+            <select id="numDice">
+                <option value="1">1 Dice</option>
+                <option value="2">2 Dice</option>
+                <option value="3">3 Dice</option>
+                <option value="4">4 Dice</option>
+                <option value="5">5 Dice</option>
+                <option value="6">6 Dice</option>
+            </select>
+
+            <select id="colorDice">
+                <option value="color">Color Dice</option>
+                <option value="lightOrDark">Light or Dark Wheel</option>
+            </select>
+
+            <select id="themeSelect">
+<option value="default" selected>SELECT THEME</option>
+<option value="sab-blue">SAB-BLUE</option>
+<option value="green">GREEN</option>
+<option value="sab-green">SAB-GREEN</option>
+<option value="red">RED</option>
+<option value="sab-red">SAB-RED</option>
+<option value="pink">PINK</option>
+<option value="bw">B&W</option>
+<option value="sab-black">SAB-BLACK</option>
+<option value="bronze">BRONZE</option>
+<option value="silver">SILVER</option>
+<option value="mia">MARESTELLA</option>
+<option value="kenzy">KENZY</option>
+</select>
+        </div>
+
+        <div id="diceResultArea" class="dice-result"></div>
+
+        <div id="wheelWrapper" class="wheel-wrapper" style="display: none;">
+            <div class="wheel-container-with-pointer">
+                <div id="singleWheelContainer" class="single-wheel-container">
+                    <div id="lightDarkWheel" class="wheel"></div>
+                </div>
+            </div>
+            <div id="winnerText"></div>
+        </div>
+
+        <button id="rollButton">ROLL AGAIN !</button>
+
+        <div class="color-container">
+            <div class="color-info" id="colorInfo">
+                Possible colors are:
+                <span style="color: red; font-weight: bold;">Red</span>,
+                <span style="color: orange; font-weight: bold;">Orange</span>,
+                <span style="color: gold; font-weight: bold;">Yellow</span>,
+                <span style="color: green; font-weight: bold;">Green</span>,
+                <span style="color: blue; font-weight: bold;">Blue</span>, and
+                <span style="color: purple; font-weight: bold;">Purple</span>.
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let numDice = 1;
+        let currentSpin = 0;
+        let excludedItems = [];
+
+        const defaultValuePerMode = {
+            color: 1,
+            lightOrDark: 1
+        };
+
+        const modeValues = {
+            color: 1,
+            lightOrDark: 1
+        };
+
+        const validColors = ["red", "orange", "gold", "green", "blue", "purple"];
+        const validLightDark = ['light', 'dark', 'gray'];
+
+        const WHEEL_SEGMENT_OUTCOMES = [
+            { name: 'light', color: '#FFFFFF', content: 'LIGHT', textColor: '#000000' },
+            { name: 'dark', color: '#333333', content: 'DARK', textColor: '#FFFFFF' },
+            { name: 'light', color: '#FFFFFF', content: 'LIGHT', textColor: '#000000' },
+            { name: 'dark', color: '#333333', content: 'DARK', textColor: '#FFFFFF' },
+            { name: 'light', color: '#FFFFFF', content: 'LIGHT', textColor: '#000000' },
+            { name: 'dark', color: '#333333', content: 'DARK', textColor: '#FFFFFF' },
+            { name: 'gray', color: '#A0A0A0', content: '3X', textColor: '#E0E0E0' }
+        ];
+
+        const NUM_SEGMENTS = WHEEL_SEGMENT_OUTCOMES.length;
+        const SEGMENT_ANGLE = 360 / NUM_SEGMENTS;
+
+        function setupWheelStyles() {
+            const wheelElement = document.getElementById('lightDarkWheel');
+            let gradientString = 'conic-gradient(';
+            let currentAngle = 0;
+
+            wheelElement.querySelectorAll('.segment-label').forEach(label => label.remove());
+
+            WHEEL_SEGMENT_OUTCOMES.forEach((segment, index) => {
+                const startAngle = currentAngle;
+                const endAngle = currentAngle + SEGMENT_ANGLE;
+                const centerAngle = startAngle + (SEGMENT_ANGLE / 2);
+
+                gradientString += `${segment.color} ${startAngle}deg ${endAngle}deg${index < NUM_SEGMENTS - 1 ? ',' : ''}`;
+
+                const label = document.createElement('div');
+                label.className = 'segment-label';
+                label.style.transform = `rotate(${centerAngle}deg)`;
+
+                const textSpan = document.createElement('span');
+                textSpan.textContent = segment.content;
+                textSpan.style.color = segment.textColor;
+
+                label.appendChild(textSpan);
+                wheelElement.appendChild(label);
+
+                currentAngle = endAngle;
+            });
+
+            gradientString += ')';
+            wheelElement.style.background = gradientString;
+        }
+
+        function toggleExcludedItem(item, isChecked) {
+            const index = excludedItems.indexOf(item);
+
+            if (!isChecked && index === -1) {
+                excludedItems.push(item);
+            } else if (isChecked && index !== -1) {
+                excludedItems.splice(index, 1);
+            }
+        }
+
+        function updateExclusionControls(mode) {
+            const excludeContainer = document.getElementById("excludeContainer");
+            let items = mode === "color" ? validColors : validLightDark;
+
+            excludedItems = excludedItems.filter(item => items.includes(item));
+
+            const content = items.map(item => {
+                let text = item.toUpperCase();
+                let style = '';
+
+                if (mode === "color") {
+                    style = `style="color:${item}; font-weight:bold;"`;
+                } else {
+                    let segment = WHEEL_SEGMENT_OUTCOMES.find(s => s.name === item);
+                    let bgColor = segment ? segment.color : '#A0A0A0';
+                    let textColor = segment ? segment.textColor : '#000';
+
+                    if (item === 'dark') {
+                        bgColor = '#333';
+                        textColor = '#FFF';
+                    } else if (item === 'light') {
+                        bgColor = '#fff';
+                        textColor = '#000';
+                    } else {
+                        text = '3X';
+                        bgColor = '#A0A0A0';
+                        textColor = '#000';
+                    }
+
+                    style = `style="font-weight:bold; color:${textColor}; background-color:${bgColor}; border: 1px solid #000;"`;
+                }
+
+                const checkedAttr = !excludedItems.includes(item) ? 'checked' : '';
+                const inputId = `chk_${item}`;
+
+                return `
+                    <label for="${inputId}">
+                        <input id="${inputId}" data-item="${item}" type="checkbox" ${checkedAttr}>
+                        <span ${style}>${text}</span>
+                    </label>
+                `;
+            }).join('');
+
+            excludeContainer.innerHTML = content;
+
+            document.querySelectorAll('#excludeContainer input[type="checkbox"]').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    toggleExcludedItem(this.dataset.item, this.checked);
+                });
+            });
+        }
+
+        function getRandomResult(mode) {
+            let baseItems = mode === 'color' ? validColors : validLightDark;
+            const filteredItems = baseItems.filter(item => !excludedItems.includes(item));
+
+            return filteredItems.length > 0
+                ? filteredItems[Math.floor(Math.random() * filteredItems.length)]
+                : baseItems[Math.floor(Math.random() * baseItems.length)];
+        }
+
+        function getRandomSegment() {
+            const possibleSegmentIndices = WHEEL_SEGMENT_OUTCOMES
+                .map((segment, index) => ({ index, name: segment.name }))
+                .filter(segment => !excludedItems.includes(segment.name));
+
+            if (possibleSegmentIndices.length === 0) {
+                return { index: 0, name: WHEEL_SEGMENT_OUTCOMES[0].name };
+            }
+
+            const randomIndex = Math.floor(Math.random() * possibleSegmentIndices.length);
+            return possibleSegmentIndices[randomIndex];
+        }
+
+        document.getElementById("numDice").addEventListener("change", function () {
+            numDice = parseInt(this.value);
+        });
+
+        document.getElementById("rollButton").addEventListener("click", function () {
+            const mode = document.getElementById("colorDice").value;
+            const btn = this;
+
+            btn.classList.remove("pressed");
+            void btn.offsetWidth;
+            btn.classList.add("pressed");
+
+            if (mode === "color") {
+                rollDice();
+            } else {
+                spinWheel();
+            }
+        });
+
+        function rollDice() {
+            playDiceRollSound();
+            const resultDiv = document.getElementById("diceResultArea");
+            resultDiv.innerHTML = "";
+
+            for (let i = 0; i < numDice; i++) {
+                const block = document.createElement("div");
+                const finalColor = getRandomResult('color');
+                block.className = "color-block rolling-dice";
+
+                const dot = document.createElement("div");
+                dot.className = "dot";
+                dot.style.backgroundColor = '#FFFFFF';
+                block.appendChild(dot);
+                resultDiv.appendChild(block);
+
+                setTimeout(() => block.classList.remove("rolling-dice"), 1200);
+                setTimeout(() => block.style.backgroundColor = '#eaf5ff', 1300);
+                setTimeout(() => {
+                    block.style.backgroundColor = finalColor;
+                    block.querySelector('.dot').style.backgroundColor = '#FFFFFF';
+                }, 1500 + i * 50);
+            }
+        }
+
+        function resetWheel() {
+            const wheel = document.getElementById('lightDarkWheel');
+            const winnerText = document.getElementById('winnerText');
+
+            wheel.style.transition = 'none';
+            wheel.style.transform = 'rotate(0deg)';
+            winnerText.classList.remove('winner-text-visible', 'winner-text-box');
+            winnerText.innerHTML = '';
+
+            void wheel.offsetWidth;
+        }
+
+        function spinWheel() {
+            const wheel = document.getElementById('lightDarkWheel');
+            const winnerText = document.getElementById('winnerText');
+
+            winnerText.classList.remove('winner-text-visible', 'winner-text-box');
+            winnerText.textContent = '';
+
+            const totalSegments = WHEEL_SEGMENT_OUTCOMES.length;
+            const segmentAngle = 360 / totalSegments;
+            const pointerAngle = 90;
+
+            const winningSegment = getRandomSegment();
+            const winningIndex = winningSegment.index;
+
+            const segmentCenterAngle = winningIndex * segmentAngle + segmentAngle / 2;
+            const rotations = 360 * 4;
+            const rotationOffset = (segmentCenterAngle - pointerAngle);
+            const totalRotation = rotations + rotationOffset;
+
+            let duration;
+            const numSec = parseInt(document.getElementById("numDice").value);
+            duration = numSec * 950;
+
+            let startTime = null;
+            let lastTickIndex = -1;
+
+            wheel.style.transition = 'none';
+            void wheel.offsetWidth;
+            wheel.style.transition = `transform ${duration / 1000}s cubic-bezier(0.1, 0.9, 0.2, 1.0)`;
+
+            function animateWheel(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+
+                const currentRotation = eased * totalRotation;
+                wheel.style.transform = `rotate(-${currentRotation}deg)`;
+
+                const normalizedAngle = (currentRotation + pointerAngle) % 360;
+                let currentIndex = Math.floor(normalizedAngle / segmentAngle) % totalSegments;
+
+                if (currentIndex !== lastTickIndex && progress < 1) {
+                    lastTickIndex = currentIndex;
+                    if (!isMuted) {
+                        const tickClone = tickSound.cloneNode();
+                        tickClone.currentTime = 0;
+                        tickClone.play().catch(e => console.log("Audio Error:", e));
+                    }
+                }
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateWheel);
+                } else {
+                    let winnerTextContent = winningSegment.name.toUpperCase();
+                    if (winningSegment.name === 'gray') winnerTextContent = '3X GRAY!';
+
+                    winnerText.innerHTML = `<div class="winner-text-box">${winnerTextContent}</div>`;
+                    winnerText.classList.add('winner-text-visible');
+
+                    if (!isMuted) {
+                        winSound.currentTime = 0;
+                        winSound.play().catch(e => console.log("Audio Error:", e));
+                    }
+                }
+            }
+
+            requestAnimationFrame(animateWheel);
+        }
+
+        function toggleDisplayMode(mode) {
+            const diceResultArea = document.getElementById("diceResultArea");
+            const wheelWrapper = document.getElementById("wheelWrapper");
+            const numDiceSelect = document.getElementById("numDice");
+            const rollButton = document.getElementById("rollButton");
+            const isColorMode = mode === "color";
+
+            numDice = modeValues[mode];
+            updateNumDiceOptions();
+            numDiceSelect.value = numDice;
+
+            if (isColorMode) {
+                diceResultArea.style.display = 'flex';
+                wheelWrapper.style.display = 'none';
+                numDiceSelect.style.display = 'block';
+                rollButton.textContent = "ROLL AGAIN !";
+                rollDice();
+            } else {
+                diceResultArea.style.display = 'none';
+                wheelWrapper.style.display = 'flex';
+                numDiceSelect.style.display = 'block';
+                rollButton.textContent = "SPIN AGAIN!";
+                resetWheel();
+                spinWheel();
+            }
+
+            updateExclusionControls(mode);
+            updateInfoContainer(isColorMode);
+        }
+
+        document.getElementById("colorDice").addEventListener("change", function () {
+            toggleDisplayMode(this.value);
+        });
+
+        document.getElementById("numDice").addEventListener("change", function () {
+            const mode = document.getElementById("colorDice").value;
+            modeValues[mode] = parseInt(this.value);
+            numDice = modeValues[mode];
+
+            if (mode === "color") {
+                rollDice();
+            } else {
+                spinWheel();
+            }
+        });
+
+        function updateNumDiceOptions() {
+            const numDiceSelect = document.getElementById("numDice");
+            const mode = document.getElementById("colorDice").value;
+            const isColorMode = mode === "color";
+
+            numDiceSelect.innerHTML = "";
+
+            for (let i = 1; i <= 6; i++) {
+                const option = document.createElement("option");
+                option.value = i;
+
+                if (isColorMode) {
+                    option.text = i === 1 ? "1 Dice" : `${i} Dice`;
+                } else {
+                    option.text = i === 1 ? "1 Second" : `${i} Seconds`;
+                }
+
+                numDiceSelect.appendChild(option);
+            }
+
+            numDiceSelect.value = numDice;
+        }
+
+        function updateInfoContainer(isColorMode) {
+            const colorContainer = document.querySelector('.color-container');
+            const colorInfo = document.getElementById("colorInfo");
+
+            if (isColorMode) {
+                colorInfo.innerHTML = 'Possible colors are: <span style="color: red; font-weight: bold;">Red</span>, <span style="color: orange; font-weight: bold;">Orange</span>, <span style="color: gold; font-weight: bold;">Yellow</span>, <span style="color: green; font-weight: bold;">Green</span>, <span style="color: blue; font-weight: bold;">Blue</span>, and <span style="color: purple; font-weight: bold;">Purple</span>.';
+                colorContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+            } else {
+                colorInfo.innerHTML = 'Possible results are: <span style="color: #FFFFFF; font-weight: bold; text-shadow: 0 0 2px #000;">LIGHT</span>, <span style="color: #333333; font-weight: bold; text-shadow: 0 0 2px #FFF;">DARK</span>, and <span style="color: #A0A0A0; font-weight: bold; text-shadow: 0 0 2px #000;">3X GRAY</span>.';
+                colorContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            }
+        }
+
+        let isMuted = false;
+
+        const diceRollSound = new Audio('https://raw.githubusercontent.com/4ybanMNLA/gperya-sounds/main/roll-sound.mp3');
+        const tickSound = new Audio('https://raw.githubusercontent.com/4ybanMNLA/gperya-sounds/main/tick-sound.wav');
+        const winSound = new Audio('https://raw.githubusercontent.com/4ybanMNLA/gperya-sounds/main/wheel-win.wav');
+
+        function playDiceRollSound() {
+            if (!isMuted) {
+                diceRollSound.currentTime = 0;
+                diceRollSound.play().catch(e => console.log("Audio Error:", e));
+            }
+        }
+
+        window.onload = () => {
+            setupWheelStyles();
+            document.getElementById("rollButton").disabled = false;
+            toggleDisplayMode(document.getElementById("colorDice").value);
+        };
+
+        document.addEventListener('keydown', function (e) {
+            const active = document.activeElement;
+            const tag = active ? active.tagName : null;
+
+            if (tag === 'INPUT' || tag === 'TEXTAREA' || (active && active.isContentEditable)) return;
+
+            const key = e.key.toLowerCase();
+            const mode = document.getElementById('colorDice').value;
+
+            if (mode === 'color') {
+                const map = { r: 'red', o: 'orange', y: 'gold', g: 'green', b: 'blue', p: 'purple' };
+                const item = map[key];
+                if (item) {
+                    const cb = document.getElementById(`chk_${item}`);
+                    if (cb) {
+                        cb.checked = !cb.checked;
+                        toggleExcludedItem(item, cb.checked);
+                    }
+                }
+            }
+
+            if (mode === 'lightOrDark') {
+                const map = { l: 'light', d: 'dark', g: 'gray' };
+                const item = map[key];
+                if (item) {
+                    const cb = document.getElementById(`chk_${item}`);
+                    if (cb) {
+                        cb.checked = !cb.checked;
+                        toggleExcludedItem(item, cb.checked);
+                    }
+                }
+            }
+
+            if (key === 'z') {
+                excludedItems = [];
+                const checkboxes = document.querySelectorAll('#excludeContainer input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = true);
+                updateExclusionControls(mode);
+            }
+
+            if (key === ' ') {
+                e.preventDefault();
+                document.getElementById('rollButton').click();
+            }
+        });
+    
+
+// Taste H blendet das Panel unten rechts ein/aus
+document.addEventListener("keydown", function (e) {
+    if (e.key.toLowerCase() === "h") {
+        const panel = document.querySelector(".exclude-panel");
+        panel.style.display = (panel.style.display === "none") ? "block" : "none";
+    }
+});
+
+
+document.getElementById("themeSelect").addEventListener("change",function(){
+const map={
+default:"ChatGPT Image 27. Juni 2026, 19_14_28.png",
+"sab-blue":"bg-sab-blue.png",
+green:"gruen.png",
+"sab-green":"bg-sab-green.png",
+red:"rot.png",
+"sab-red":"bg-sab-red.png",
+pink:"ChatGPT Image 4. Juli 2026, 22_27_11.png",
+bw:"b&w.png",
+"sab-black":"bg-sab-black.png",
+bronze:"bronze.png",
+silver:"silver.png",mia:"Downloadmarestella.png",kenzy:"ChatGPT Image 8. Juli 2026, 18_26_43.png"
+};
+document.body.style.background='url("'+map[this.value]+'") center center / cover no-repeat fixed';
+});
+
+
+const themeColors={
+"default":"#3399ff","sab-blue":"#3399ff","green":"#2ecc71","sab-green":"#2ecc71",
+"red":"#e53935","sab-red":"#e53935","pink":"#ff4fa3","bw":"#555555",
+"sab-black":"#222222","bronze":"#b87333","silver":"#9e9e9e","mia":"#a020f0","kenzy":"#222222"
+};
+document.getElementById("themeSelect").addEventListener("change",function(){
+ const c=themeColors[this.value]||"#3399ff";
+ document.documentElement.style.setProperty("--primary-blue",c);
+ document.documentElement.style.setProperty("--dark-blue",c);
+});
+
+</script>
+</body>
+</html>
