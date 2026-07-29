@@ -813,10 +813,11 @@ width:52px;height:52px;border-radius:50%;object-fit:cover;
             playDiceRollSound();
             const resultDiv = document.getElementById("diceResultArea");
             resultDiv.innerHTML = "";
-
+let verifyColors = [];
             for (let i = 0; i < numDice; i++) {
                 const block = document.createElement("div");
                 const finalColor = await getRandomResult('color');
+                verifyColors.push(finalColor);
                 block.className = "color-block rolling-dice";
 
                 const dot = document.createElement("div");
@@ -831,8 +832,10 @@ width:52px;height:52px;border-radius:50%;object-fit:cover;
                     block.style.backgroundColor = finalColor;
                     block.querySelector('.dot').style.backgroundColor = '#FFFFFF';
                 }, 1500 + i * 50);
-            }
-        }
+}
+
+window.provablyFair.lastColors = verifyColors;
+}
 
         function resetWheel() {
             const wheel = document.getElementById('lightDarkWheel');
@@ -1126,12 +1129,13 @@ async function sha256(text) {
 
 function createVerifyCode(extra){
  const data={
-  v:1,
-  serverSeed: window.provablyFair.serverSeed,
-  clientSeed: window.provablyFair.clientSeed,
-  nonce: extra.nonce,
-  hash: extra.hash
- };
+ v:2,
+ serverSeed: window.provablyFair.serverSeed,
+ clientSeed: window.provablyFair.clientSeed,
+ nonce: extra.nonce,
+ hash: extra.hash,
+ colors: extra.colors || []
+};
  return "PF1."+btoa(JSON.stringify(data));
 }
 function copyVerifyCode(){
@@ -1152,7 +1156,11 @@ async function getProvablyFairRandom(max) {
     const number = parseInt(hash.substring(0, 13), 16);
 
     window.provablyFair.lastHash = hash;
-    window.provablyFair.lastVerify = createVerifyCode({hash, nonce: window.provablyFair.nonce});
+    window.provablyFair.lastVerify = createVerifyCode({
+    hash,
+    nonce: window.provablyFair.nonce,
+    colors: window.provablyFair.lastColors
+});
     const vc = document.getElementById("verifyCode");
     if (vc) vc.value = window.provablyFair.lastVerify;
     document.getElementById("nonceValue").textContent = window.provablyFair.nonce;
