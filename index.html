@@ -600,16 +600,35 @@ width:52px;height:52px;border-radius:50%;object-fit:cover;
 <div id="winnerText"></div>
 </div>
 <button id="rollButton">ROLL AGAIN !</button>
-<div id="provablyFairBox" style="margin-top:20px;padding:15px;border:2px solid #3399ff;border-radius:12px;background:rgba(255,255,255,0.08);color:white;width:90%;max-width:650px;">
-<h3 style="margin-top:0;">🔒 Provably Fair</h3>
-<p><strong>Server Seed (Hash):</strong></p>
-<code id="serverSeedHash" style="word-break:break-all;">Loading...</code>
-<p style="margin-top:12px;"><strong>Client Seed:</strong></p>
-<input id="clientSeedInput" placeholder="Client Seed" style="width:100%;padding:8px;border-radius:8px;" type="text"/>
-<p style="margin-top:12px;"><strong>Nonce:</strong>
+<div id="provablyFairBox" style="display:none;">
+<code id="serverSeedHash">Loading...</code>
+<input id="clientSeedInput" type="text" />
 <span id="nonceValue">0</span>
-</p>
 </div>
+
+<div id="verifyBox" style="
+margin-top:20px;
+padding:20px;
+border:2px solid #3399ff;
+border-radius:18px;
+background:rgba(255,255,255,0.08);
+color:white;
+width:90%;
+max-width:650px;
+backdrop-filter:blur(8px);
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+">
+<h3 style="margin-top:0;">📋 VERIFY CODE</h3>
+<input id="verifyCode" readonly style="width:100%;padding:12px;border-radius:10px;box-sizing:border-box;" value="Roll to generate code">
+
+<div style="display:flex;gap:12px;margin-top:12px;">
+<button onclick="copyVerifyCode()" style="flex:1;padding:12px;border-radius:12px;font-size:20px;">📋 COPY</button>
+<a href="verify.html" target="_blank" style="flex:1;">
+<button style="width:100%;padding:12px;border-radius:12px;font-size:20px;">✅ VERIFY</button>
+</a>
+</div>
+</div>
+
 <div class="color-container">
 <div class="color-info" id="colorInfo">
                 Possible colors are:
@@ -1197,10 +1216,6 @@ localStorage.setItem("clientSeed", window.provablyFair.clientSeed);
 console.log("Provably Fair scaffold loaded", window.provablyFair);
 </script>
 
-<div id="verifyBox" style="margin-top:20px;padding:15px;border:2px solid #3399ff;border-radius:12px;background:rgba(255,255,255,0.08);color:white;width:90%;max-width:650px;">
-<h3>📋 Verify Code</h3>
-<input id="verifyCode" readonly style="width:100%;padding:8px;border-radius:8px;" value="Roll to generate code">
-<button onclick="copyVerifyCode()" style="margin-top:10px;padding:8px;border-radius:8px;">📋 Copy</button>
-</div>
+
 </body>
 </html>
