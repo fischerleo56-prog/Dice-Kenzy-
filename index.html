@@ -835,6 +835,14 @@ let verifyColors = [];
 }
 
 window.provablyFair.lastColors = verifyColors;
+                window.provablyFair.lastVerify = createVerifyCode({
+    hash: window.provablyFair.lastHash,
+    nonce: window.provablyFair.nonce - 1,
+    colors: verifyColors
+});
+
+const vc = document.getElementById("verifyCode");
+if (vc) vc.value = window.provablyFair.lastVerify;
 }
 
         function resetWheel() {
