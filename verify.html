@@ -1,6 +1,5 @@
 <!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Verify Dice</title></head>
+<html><head><meta charset="utf-8"><title>Verify Dice</title></head>
 <body style="font-family:Arial;background:#111;color:white;padding:30px">
 <h1>🔒 Verify Roll</h1>
 <textarea id="code" style="width:400px;height:100px" placeholder="PF1.Code"></textarea><br>
@@ -16,11 +15,14 @@ async function verify(){
  try{
   const d=JSON.parse(atob(document.getElementById('code').value.replace('PF1.','')));
   const h=await sha256(d.serverSeed+":"+d.clientSeed+":"+d.nonce);
-  document.getElementById('out').textContent =
-   h===d.hash ? "✅ VALID\nHash matches\nNonce: "+d.nonce :
-   "❌ INVALID";
+  let result = h===d.hash ? "✅ VALID\nHash matches\nNonce: "+d.nonce : "❌ INVALID";
+  if(d.colors){
+    result += "\n\n🎲 Colors:\n" + d.colors.map((c,i)=>(i+1)+". "+c).join("\n");
+  } else {
+    result += "\n\n⚠️ Colors are not included in this old code yet.";
+  }
+  document.getElementById('out').textContent=result;
  }catch(e){document.getElementById('out').textContent="❌ Invalid code";}
 }
 </script>
-</body>
-</html>
+</body></html>
