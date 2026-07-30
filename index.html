@@ -1167,28 +1167,14 @@ async function sha256(text) {
 
 
 function createVerifyCode(extra){
- const colors = (extra.colors || []).map(c => {
-   const m = {
-    red:"R", orange:"O", gold:"Y",
-    green:"G", blue:"B", purple:"P"
-   };
-   return m[c] || "?";
- }).join("");
-
- const short = {
-  v:2,
-  s: window.provablyFair.serverSeed,
-  c: window.provablyFair.clientSeed,
-  n: extra.nonce,
-  h: extra.hash,
-  colors: colors
+ const id = Math.random().toString(36).substring(2,8).toUpperCase();
+ const data = {
+  id:id,
+  colors: extra.colors || [],
+  nonce: extra.nonce
  };
-
- return "KZ-" + colors + "-" +
- btoa(JSON.stringify(short))
- .replace(/=/g,"")
- .substring(0,8)
- + "-" + extra.nonce;
+ localStorage.setItem("KZ_"+id, JSON.stringify(data));
+ return "KZ-" + id;
 }
 function copyVerifyCode(){
  const el=document.getElementById("verifyCode");
