@@ -607,26 +607,36 @@ width:52px;height:52px;border-radius:50%;object-fit:cover;
 </div>
 
 <div id="verifyBox" style="
-margin-top:20px;
-padding:20px;
-border:2px solid #3399ff;
-border-radius:18px;
-background:rgba(255,255,255,0.08);
+margin:20px auto;
+padding:10px;
 color:white;
 width:90%;
 max-width:650px;
-backdrop-filter:blur(8px);
-box-shadow:0 8px 25px rgba(0,0,0,.25);
+text-align:center;
+background:transparent;
 ">
-<h3 style="margin-top:0;">📋 VERIFY CODE</h3>
-<input id="verifyCode" readonly style="width:100%;padding:12px;border-radius:10px;box-sizing:border-box;" value="Roll to generate code">
 
-<div style="display:flex;gap:12px;margin-top:12px;">
-<button onclick="copyVerifyCode()" style="flex:1;padding:12px;border-radius:12px;font-size:20px;">📋 COPY</button>
-<a href="verify.html" target="_blank" style="flex:1;">
-<button style="width:100%;padding:12px;border-radius:12px;font-size:20px;">✅ VERIFY</button>
+<h3 style="margin:0 0 10px 0;">📋 VERIFY CODE</h3>
+
+<div id="verifyCodeDisplay" style="
+font-size:26px;
+font-weight:bold;
+letter-spacing:2px;
+margin:10px;
+color:white;
+text-shadow:0 3px 6px black;
+">
+Roll to generate code
+</div>
+
+<div style="display:flex;gap:12px;justify-content:center;margin-top:12px;">
+<button onclick="copyVerifyCode()" style="padding:10px 35px;border-radius:12px;font-size:20px;">📋 COPY</button>
+
+<a href="verify.html" target="_blank">
+<button style="padding:10px 35px;border-radius:12px;font-size:20px;">✅ VERIFY</button>
 </a>
 </div>
+
 </div>
 
 <div class="color-container">
@@ -1156,14 +1166,10 @@ async function sha256(text) {
 
 function createVerifyCode(extra){
  const colors = (extra.colors || []).map(c => {
-const m = {
- red:"R",
- orange:"O",
- gold:"Y",
- green:"G",
- blue:"B",
- purple:"P"
-};
+   const m = {
+    red:"R", orange:"O", gold:"G",
+    green:"G", blue:"B", purple:"P"
+   };
    return m[c] || "?";
  }).join("");
 
@@ -1205,8 +1211,8 @@ async function getProvablyFairRandom(max) {
     nonce: window.provablyFair.nonce,
     colors: window.provablyFair.lastColors
 });
-    const vc = document.getElementById("verifyCode");
-    if (vc) vc.value = window.provablyFair.lastVerify;
+    const vc = document.getElementById("verifyCodeDisplay");
+    if (vc) vc.textContent = window.provablyFair.lastVerify;
     document.getElementById("nonceValue").textContent = window.provablyFair.nonce;
 
 if (document.getElementById("serverSeedHash")) {
