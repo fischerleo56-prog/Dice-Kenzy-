@@ -630,7 +630,7 @@ Roll to generate code
 </div>
 
 <div style="display:flex;gap:12px;justify-content:center;margin-top:12px;">
-<button onclick="copyVerifyCode()" style="padding:10px 35px;border-radius:12px;font-size:20px;">📋 COPY</button>
+
 
 <a href="verify.html" target="_blank">
 <button style="padding:10px 35px;border-radius:12px;font-size:20px;">✅ VERIFY</button>
@@ -1209,7 +1209,7 @@ async function getProvablyFairRandom(max) {
     window.provablyFair.lastVerify = createVerifyCode({
     hash,
     nonce: window.provablyFair.nonce,
-    colors: window.provablyFair.lastColors
+    colors: window.lastRolledColors || window.provablyFair.lastColors
 });
     const vc = document.getElementById("verifyCodeDisplay");
     if (vc) vc.textContent = window.provablyFair.lastVerify;
