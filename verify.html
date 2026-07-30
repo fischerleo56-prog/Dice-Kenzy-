@@ -1,44 +1,24 @@
 <!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>Kenzy Verify</title>
-</head>
+<head><meta charset="utf-8"><title>Kenzy Verify</title></head>
 <body style="font-family:Arial;background:#111;color:white;padding:30px">
 <h1>🔒 Kenzy Roll Verify</h1>
-
-<textarea id="code" style="width:400px;height:80px" placeholder="KZ-RBGY-123456-1"></textarea><br>
+<textarea id="code" style="width:400px;height:80px" placeholder="KZ-XXXXXX"></textarea><br>
 <button onclick="verify()">Verify</button>
-
 <pre id="out"></pre>
-
 <script>
 function verify(){
  const code=document.getElementById("code").value.trim();
-
- if(!code.startsWith("KZ-")){
+ const id=code.replace("KZ-","");
+ const data=localStorage.getItem("KZ_"+id);
+ if(!data){
   document.getElementById("out").textContent="❌ Invalid code";
   return;
  }
-
- const parts=code.split("-");
- const colors=parts[1] || "";
-
- let names={
- R:"🟥 Red",
- O:"🟧 Orange",
- Y:"🟨 Yellow",
- G:"🟩 Green",
- B:"🟦 Blue",
- P:"🟪 Purple"
-};
-
- let out="✅ CODE FORMAT OK\n\n🎲 Colors:\n";
-
- [...colors].forEach((c,i)=>{
-  out+=(i+1)+". "+(names[c]||c)+"\n";
- });
-
+ const obj=JSON.parse(data);
+ const names={red:"🟥 Red",orange:"🟧 Orange",gold:"🟨 Yellow",yellow:"🟨 Yellow",green:"🟩 Green",blue:"🟦 Blue",purple:"🟪 Purple"};
+ let out="✅ CODE VALID\n\n🎲 Colors:\n";
+ obj.colors.forEach((c,i)=>out+=(i+1)+". "+(names[c]||c)+"\n");
  document.getElementById("out").textContent=out;
 }
 </script>
