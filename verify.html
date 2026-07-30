@@ -1,28 +1,46 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>Verify Dice</title></head>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Kenzy Verify</title>
+</head>
 <body style="font-family:Arial;background:#111;color:white;padding:30px">
-<h1>🔒 Verify Roll</h1>
-<textarea id="code" style="width:400px;height:100px" placeholder="PF1.Code"></textarea><br>
+<h1>🔒 Kenzy Roll Verify</h1>
+
+<textarea id="code" style="width:400px;height:80px" placeholder="KZ-RBGY-123456-1"></textarea><br>
 <button onclick="verify()">Verify</button>
+
 <pre id="out"></pre>
+
 <script>
-async function sha256(text){
- const d=new TextEncoder().encode(text);
- const h=await crypto.subtle.digest("SHA-256",d);
- return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-async function verify(){
- try{
-  const d=JSON.parse(atob(document.getElementById('code').value.replace('PF1.','')));
-  const h=await sha256(d.serverSeed+":"+d.clientSeed+":"+d.nonce);
-  let result = h===d.hash ? "✅ VALID\nHash matches\nNonce: "+d.nonce : "❌ INVALID";
-  if(d.colors){
-    result += "\n\n🎲 Colors:\n" + d.colors.map((c,i)=>(i+1)+". "+c).join("\n");
-  } else {
-    result += "\n\n⚠️ Colors are not included in this old code yet.";
-  }
-  document.getElementById('out').textContent=result;
- }catch(e){document.getElementById('out').textContent="❌ Invalid code";}
+function verify(){
+ const code=document.getElementById("code").value.trim();
+
+ if(!code.startsWith("KZ-")){
+  document.getElementById("out").textContent="❌ Invalid code";
+  return;
+ }
+
+ const parts=code.split("-");
+ const colors=parts[1] || "";
+
+ let names={
+ R:"🟥 Red",
+ O:"🟧 Orange",
+ Y:"🟨 Yellow",
+ G:"🟩 Green",
+ B:"🟦 Blue",
+ P:"🟪 Purple"
+};
+
+ let out="✅ CODE FORMAT OK\n\n🎲 Colors:\n";
+
+ [...colors].forEach((c,i)=>{
+  out+=(i+1)+". "+(names[c]||c)+"\n";
+ });
+
+ document.getElementById("out").textContent=out;
 }
 </script>
-</body></html>
+</body>
+</html>
