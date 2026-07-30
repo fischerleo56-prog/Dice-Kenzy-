@@ -1155,15 +1155,32 @@ async function sha256(text) {
 
 
 function createVerifyCode(extra){
- const data={
- v:2,
- serverSeed: window.provablyFair.serverSeed,
- clientSeed: window.provablyFair.clientSeed,
- nonce: extra.nonce,
- hash: extra.hash,
- colors: extra.colors || []
+ const colors = (extra.colors || []).map(c => {
+const m = {
+ red:"R",
+ orange:"O",
+ gold:"Y",
+ green:"G",
+ blue:"B",
+ purple:"P"
 };
- return "PF1."+btoa(JSON.stringify(data));
+   return m[c] || "?";
+ }).join("");
+
+ const short = {
+  v:2,
+  s: window.provablyFair.serverSeed,
+  c: window.provablyFair.clientSeed,
+  n: extra.nonce,
+  h: extra.hash,
+  colors: colors
+ };
+
+ return "KZ-" + colors + "-" +
+ btoa(JSON.stringify(short))
+ .replace(/=/g,"")
+ .substring(0,8)
+ + "-" + extra.nonce;
 }
 function copyVerifyCode(){
  const el=document.getElementById("verifyCode");
