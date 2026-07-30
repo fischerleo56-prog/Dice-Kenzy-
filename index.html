@@ -1174,6 +1174,7 @@ function createVerifyCode(extra){
   nonce: extra.nonce
  };
  localStorage.setItem("KZ_"+id, JSON.stringify(data));
+ if(window.saveKzCode) window.saveKzCode(id, data);
  return "KZ-" + id;
 }
 function copyVerifyCode(){
@@ -1253,6 +1254,18 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+
+window.saveKzCode = async function(id, data){
+  try{
+    await set(ref(db, "verifyCodes/" + id), {
+      colors: data.colors || [],
+      nonce: data.nonce || null,
+      created: serverTimestamp()
+    });
+  }catch(e){
+    console.error("KZ save error", e);
+  }
+};
 
 const userRef = ref(db, "online/" + crypto.randomUUID());
 
