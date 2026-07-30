@@ -863,7 +863,7 @@ let verifyColors = [];
                 }, 1500 + i * 50);
 }
 console.log("CURRENT COLORS:", verifyColors);
-window.provablyFair.lastColors = verifyColors;
+window.provablyFair.lastColors = verifyColors.map(c => c.toLowerCase());
                 window.provablyFair.lastVerify = createVerifyCode({
     hash: window.provablyFair.lastHash,
     nonce: window.provablyFair.nonce - 1,
