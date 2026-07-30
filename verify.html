@@ -6,19 +6,50 @@
 <textarea id="code" style="width:400px;height:80px" placeholder="KZ-XXXXXX"></textarea><br>
 <button onclick="verify()">Verify</button>
 <pre id="out"></pre>
-<script>
-function verify(){
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBUT0t1I9Dkee5Ok_uYMzs4WfdwapOA5As",
+  authDomain: "kenzy-dice.firebaseapp.com",
+  projectId: "kenzy-dice",
+  databaseURL: "https://kenzy-dice-default-rtdb.europe-west1.firebasedatabase.app",
+  storageBucket: "kenzy-dice.firebasestorage.app",
+  messagingSenderId: "578956722062",
+  appId: "1:578956722062:web:5156f5737e51ef75246edf"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.verify = async function(){
  const code=document.getElementById("code").value.trim();
  const id=code.replace("KZ-","");
- const data=localStorage.getItem("KZ_"+id);
- if(!data){
-  document.getElementById("out").textContent="❌ Invalid code";
-  return;
+ const snap = await get(ref(db, "verifyCodes/" + id));
+
+ if(!snap.exists()){
+   document.getElementById("out").textContent="❌ Invalid code";
+   return;
  }
- const obj=JSON.parse(data);
- const names={red:"🟥 Red",orange:"🟧 Orange",gold:"🟨 Yellow",yellow:"🟨 Yellow",green:"🟩 Green",blue:"🟦 Blue",purple:"🟪 Purple"};
+
+ const obj=snap.val();
+ const names={
+  red:"🟥 Red",
+  orange:"🟧 Orange",
+  gold:"🟨 Yellow",
+  yellow:"🟨 Yellow",
+  green:"🟩 Green",
+  blue:"🟦 Blue",
+  purple:"🟪 Purple"
+ };
+
  let out="✅ CODE VALID\n\n🎲 Colors:\n";
- obj.colors.forEach((c,i)=>out+=(i+1)+". "+(names[c]||c)+"\n");
+ (obj.colors || []).forEach((c,i)=>{
+   out += (i+1)+". "+(names[c]||c)+"\n";
+ });
+
  document.getElementById("out").textContent=out;
 }
 </script>
