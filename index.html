@@ -864,14 +864,16 @@ let verifyColors = [];
 }
 console.log("CURRENT COLORS:", verifyColors);
 window.provablyFair.lastColors = verifyColors.map(c => c.toLowerCase());
-                window.provablyFair.lastVerify = createVerifyCode({
+window.provablyFair.lastVerify = createVerifyCode({
     hash: window.provablyFair.lastHash,
-    nonce: window.provablyFair.nonce - 1,
-    colors: verifyColors
+    nonce: window.provablyFair.nonce,
+    colors: window.provablyFair.lastColors
 });
+const vc = document.getElementById("verifyCodeDisplay");
+if (vc) vc.textContent = window.provablyFair.lastVerify;
 
-const vc = document.getElementById("verifyCode");
-if (vc) vc.value = window.provablyFair.lastVerify;
+        // verify code is generated after the complete dice roll
+
 }
 
         function resetWheel() {
@@ -1167,7 +1169,7 @@ async function sha256(text) {
 function createVerifyCode(extra){
  const colors = (extra.colors || []).map(c => {
    const m = {
-    red:"R", orange:"O", gold:"G",
+    red:"R", orange:"O", gold:"Y",
     green:"G", blue:"B", purple:"P"
    };
    return m[c] || "?";
@@ -1204,15 +1206,8 @@ async function getProvablyFairRandom(max) {
     const hash = await sha256(input);
 
     const number = parseInt(hash.substring(0, 13), 16);
+window.provablyFair.lastHash = hash;
 
-    window.provablyFair.lastHash = hash;
-    window.provablyFair.lastVerify = createVerifyCode({
-    hash,
-    nonce: window.provablyFair.nonce,
-    colors: window.lastRolledColors || window.provablyFair.lastColors
-});
-    const vc = document.getElementById("verifyCodeDisplay");
-    if (vc) vc.textContent = window.provablyFair.lastVerify;
     document.getElementById("nonceValue").textContent = window.provablyFair.nonce;
 
 if (document.getElementById("serverSeedHash")) {
