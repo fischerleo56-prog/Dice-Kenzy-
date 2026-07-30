@@ -1283,5 +1283,164 @@ onValue(ref(db, "online"), (snapshot) => {
 });
 </script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Anti Ban Mode -->
+<style>
+#antiBanBox{
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    position:fixed !important;
+    right:15px !important;
+    bottom:15px !important;
+    margin:0 !important;
+    z-index:2147483647 !important;
+    transform:none !important;
+}
+
+#antiBanText{
+    color:white;
+    font-size:13px;
+    font-weight:bold;
+}
+
+#antiBanSwitch{
+    width:42px;
+    height:22px;
+    border-radius:20px;
+    border:0;
+    background:#555;
+    position:relative;
+    cursor:pointer;
+    padding:0;
+}
+
+#antiBanSwitch:before{
+    content:"";
+    position:absolute;
+    width:18px;
+    height:18px;
+    top:2px;
+    left:2px;
+    border-radius:50%;
+    background:white;
+    transition:.2s;
+}
+
+#antiBanSwitch.on{
+    background:#22c55e;
+}
+
+#antiBanSwitch.on:before{
+    left:22px;
+}
+
+.antiBlur{
+    filter:blur(14px)!important;
+}
+</style>
+
+<script>
+let antiBan = localStorage.getItem("antiBanMode")==="on";
+
+function createAntiBan(){
+    if(document.getElementById("antiBanBox")) return;
+
+    const verify=[...document.querySelectorAll("button")].find(b=>
+        b.textContent.toUpperCase().includes("VERIFY")
+    );
+
+    if(!verify) return;
+
+    const box=document.createElement("div");
+    box.id="antiBanBox";
+    box.innerHTML='<span id="antiBanText">Anti-Ban Mode</span><button type="button" id="antiBanSwitch"></button>';
+
+    document.body.appendChild(box);
+
+    document.getElementById("antiBanSwitch").onclick=(e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        antiBan=!antiBan;
+        localStorage.setItem("antiBanMode", antiBan?"on":"off");
+        applyAntiBan();
+    };
+}
+
+function applyAntiBan(){
+    createAntiBan();
+
+    const sw=document.getElementById("antiBanSwitch");
+    if(sw) sw.classList.toggle("on",antiBan);
+
+    document.querySelectorAll(".antiBlur").forEach(e=>e.classList.remove("antiBlur"));
+
+    if(!antiBan) return;
+
+    document.querySelectorAll("select").forEach(e=>e.classList.add("antiBlur"));
+
+    document.querySelectorAll("*").forEach(e=>{
+        if(e.textContent.trim().toUpperCase()==="ROLL COLOR DICE")
+            e.classList.add("antiBlur");
+    });
+
+    document.querySelectorAll("div").forEach(e=>{
+        const r=e.getBoundingClientRect();
+        if(r.width>=60 && r.width<=140 && r.height>=60 && r.height<=140)
+            e.classList.add("antiBlur");
+    });
+}
+
+new MutationObserver(()=>{
+    if(antiBan) applyAntiBan();
+    else createAntiBan();
+}).observe(document.body,{childList:true,subtree:true});
+
+window.addEventListener("load",createAntiBan);
+</script>
+
 </body>
 </html>
