@@ -1364,17 +1364,23 @@ function heartbeat() {
   });
 }
 
-heartbeat();
+const connectedRef = ref(db, ".info/connected");
 
-let heartbeatTimer = setInterval(heartbeat, 15000);
+onValue(connectedRef, async (snap) => {
+  if (snap.val() === true) {
+    await onDisconnect(userRef).remove();
 
-document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) heartbeat();
+    heartbeat();
+
+    setInterval(heartbeat, 15000);
+
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) heartbeat();
+    });
+
+    window.addEventListener("focus", heartbeat);
+  }
 });
-
-window.addEventListener("focus", heartbeat);
-
-onDisconnect(userRef).remove();
 
 onValue(ref(db, "online"), (snapshot) => {
   document.getElementById("onlineCounter").textContent =
