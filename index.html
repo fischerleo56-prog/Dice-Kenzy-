@@ -1356,17 +1356,31 @@ window.saveKzCode = async function(id, data){
 };
 
 const userRef = ref(db, "online/" + crypto.randomUUID());
+const connectedRef = ref(db, ".info/connected");
+let heartbeatId = null;
 
-set(userRef, {
-  online: true,
-  time: serverTimestamp()
+onValue(connectedRef, (snap) => {
+  if (snap.val() === true) {
+    set(userRef, {
+      online: true,
+      time: serverTimestamp()
+    });
+
+    onDisconnect(userRef).remove();
+
+    if (heartbeatId) clearInterval(heartbeatId);
+    heartbeatId = setInterval(() => {
+      set(userRef, {
+        online: true,
+        time: serverTimestamp()
+      });
+    }, 15000);
+  }
 });
 
-onDisconnect(userRef).remove();
-
 onValue(ref(db, "online"), (snapshot) => {
-  document.getElementById("onlineCounter").textContent =
-    "🟢 Online " + (snapshot.exists() ? Object.keys(snapshot.val()).length : 0);
+  const count = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+  document.getElementById("onlineCounter").textContent = "🟢 Online " + count;
 });
 
 
