@@ -1388,18 +1388,6 @@ onValue(ref(db, "online"), (snapshot) => {
 });
 
 
-// Announcement Reader
-onValue(ref(db, "announcements/current"), (snapshot) => {
-  const data = snapshot.val();
-  if(data && data.message){
-    const box = document.getElementById("announcementBox");
-    const text = document.getElementById("announcementText");
-    if(box && text){
-      text.textContent = data.message;
-      box.style.display = "block";
-    }
-  }
-});
 </script>
 
 
