@@ -1356,31 +1356,29 @@ window.saveKzCode = async function(id, data){
 };
 
 const userRef = ref(db, "online/" + crypto.randomUUID());
-const connectedRef = ref(db, ".info/connected");
-let heartbeatId = null;
 
-onValue(connectedRef, (snap) => {
-  if (snap.val() === true) {
-    set(userRef, {
-      online: true,
-      time: serverTimestamp()
-    });
+function heartbeat() {
+  return set(userRef, {
+    online: true,
+    time: serverTimestamp()
+  });
+}
 
-    onDisconnect(userRef).remove();
+heartbeat();
 
-    if (heartbeatId) clearInterval(heartbeatId);
-    heartbeatId = setInterval(() => {
-      set(userRef, {
-        online: true,
-        time: serverTimestamp()
-      });
-    }, 15000);
-  }
+let heartbeatTimer = setInterval(heartbeat, 15000);
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) heartbeat();
 });
 
+window.addEventListener("focus", heartbeat);
+
+onDisconnect(userRef).remove();
+
 onValue(ref(db, "online"), (snapshot) => {
-  const count = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
-  document.getElementById("onlineCounter").textContent = "🟢 Online " + count;
+  document.getElementById("onlineCounter").textContent =
+    "🟢 Online " + (snapshot.exists() ? Object.keys(snapshot.val()).length : 0);
 });
 
 
