@@ -1375,7 +1375,12 @@ window.saveKzCode = async function(id, data){
   }
 };
 
-const userRef = ref(db, "online/" + crypto.randomUUID());
+let sessionId = sessionStorage.getItem("kenzyOnlineId");
+if (!sessionId) {
+    sessionId = crypto.randomUUID();
+    sessionStorage.setItem("kenzyOnlineId", sessionId);
+}
+const userRef = ref(db, "online/" + sessionId);
 
 function heartbeat() {
   return set(userRef, {
