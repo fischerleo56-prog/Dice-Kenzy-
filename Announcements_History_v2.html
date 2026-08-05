@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Announcements</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#1a3a5a;color:#fff}
+.wrap{max-width:900px;margin:40px auto;padding:20px}
+h1{text-align:center}
+.card{background:rgba(255,255,255,.08);padding:20px;border-radius:14px;margin-bottom:16px}
+a{display:inline-block;margin-top:25px;color:#fff;background:#3399ff;padding:12px 20px;text-decoration:none;border-radius:10px}
+.time{opacity:.7;font-size:14px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>📢 Announcements</h1>
+<div id="list"></div>
+<a href="index.html">⬅ Back</a>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig={
+apiKey:"AIzaSyBUT0t1I9Dkee5Ok_uYMzs4WfdwapOA5As",
+authDomain:"kenzy-dice.firebaseapp.com",
+projectId:"kenzy-dice",
+databaseURL:"https://kenzy-dice-default-rtdb.europe-west1.firebasedatabase.app",
+storageBucket:"kenzy-dice.firebasestorage.app",
+messagingSenderId:"578956722062",
+appId:"1:578956722062:web:5156f5737e51ef75246edf"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
+
+db.ref("announcements/history").on("value",snap=>{
+ const list=document.getElementById("list");
+ list.innerHTML="";
+ if(!snap.exists()){
+   list.innerHTML='<div class="card">No announcements yet.</div>';
+   return;
+ }
+ const arr=[];
+ snap.forEach(c=>arr.push(c.val()));
+ arr.sort((a,b)=>(b.time||0)-(a.time||0));
+ arr.forEach(a=>{
+   const d=new Date(a.time||Date.now());
+
+   const card=document.createElement("div");
+   card.className="card";
+
+   const msg=document.createElement("div");
+   msg.innerHTML=(a.message||"").replace(/\n/g,"<br>");
+
+   const t=document.createElement("div");
+   t.className="time";
+   t.textContent=d.toLocaleString();
+
+   card.appendChild(msg);
+   card.appendChild(t);
+   list.appendChild(card);
+ });
+});
+</script>
+</body>
+</html>
