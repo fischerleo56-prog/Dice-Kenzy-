@@ -1399,10 +1399,10 @@ window.saveKzCode = async function(id, data){
   }
 };
 
-let sessionId = sessionStorage.getItem("kenzyOnlineId");
+let sessionId = localStorage.getItem("kenzyOnlineId");
 if (!sessionId) {
     sessionId = crypto.randomUUID();
-    sessionStorage.setItem("kenzyOnlineId", sessionId);
+    localStorage.setItem("kenzyOnlineId", sessionId);
 }
 const userRef = ref(db, "online/" + sessionId);
 
@@ -1414,6 +1414,7 @@ function heartbeat() {
 }
 
 const connectedRef = ref(db, ".info/connected");
+let heartbeatStarted = false;
 
 onValue(connectedRef, async (snap) => {
   if (snap.val() === true) {
@@ -1421,13 +1422,16 @@ onValue(connectedRef, async (snap) => {
 
     heartbeat();
 
-    setInterval(heartbeat, 15000);
+    if (!heartbeatStarted) {
+      heartbeatStarted = true;
+      setInterval(heartbeat, 15000);
 
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden) heartbeat();
-    });
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) heartbeat();
+      });
 
-    window.addEventListener("focus", heartbeat);
+      window.addEventListener("focus", heartbeat);
+    }
   }
 });
 
