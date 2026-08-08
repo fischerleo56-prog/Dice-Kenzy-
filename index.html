@@ -1549,6 +1549,21 @@ onValue(ref(db, "online"), (snapshot) => {
 .antiBlur{
     filter:blur(14px)!important;
 }
+
+.antiBanDice {
+    cursor: default;
+    transition: filter .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.antiBanDice.antiBanRevealed {
+    filter: blur(0) !important;
+    animation: antiBanDiceReveal .35s ease-out;
+}
+@keyframes antiBanDiceReveal {
+    0%   { transform: scale(.96); box-shadow: 6px 6px 12px rgba(0,0,0,.3), -4px -4px 10px var(--shadow-light); }
+    60%  { transform: scale(1.045); }
+    100% { transform: scale(1); }
+}
+
 </style>
 
 <script>
@@ -1585,6 +1600,7 @@ function applyAntiBan(){
     if(sw) sw.classList.toggle("on",antiBan);
 
     document.querySelectorAll(".antiBlur").forEach(e=>e.classList.remove("antiBlur"));
+    document.querySelectorAll(".antiBanRevealed").forEach(e=>e.classList.remove("antiBanRevealed"));
 
     if(!antiBan) return;
 
@@ -1595,10 +1611,24 @@ function applyAntiBan(){
             e.classList.add("antiBlur");
     });
 
-    document.querySelectorAll("div").forEach(e=>{
-        const r=e.getBoundingClientRect();
-        if(r.width>=60 && r.width<=140 && r.height>=60 && r.height<=140)
-            e.classList.add("antiBlur");
+    document.querySelectorAll(".color-block").forEach(e=>{
+        e.classList.add("antiBlur","antiBanDice");
+
+        if(!e.dataset.antiBanHoverBound){
+            e.dataset.antiBanHoverBound="1";
+
+            e.addEventListener("mouseenter",()=>{
+                if(!antiBan) return;
+                e.classList.remove("antiBlur");
+                e.classList.add("antiBanRevealed");
+            });
+
+            e.addEventListener("mouseleave",()=>{
+                if(!antiBan) return;
+                e.classList.remove("antiBanRevealed");
+                e.classList.add("antiBlur");
+            });
+        }
     });
 }
 
