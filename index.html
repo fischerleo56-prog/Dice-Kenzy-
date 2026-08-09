@@ -345,62 +345,6 @@ flex-wrap:wrap;
             font-weight: normal;
         }
 
-        /* KLEINES FELD UNTEN RECHTS */
-        .exclude-panel { display:none;
-            position: fixed;
-            bottom: 12px;
-            right: 12px;
-            width: 220px;
-            max-width: 220px;
-            margin-top: 0;
-            background: rgba(0, 0, 0, 0.45);
-            border: 2px solid rgba(255,255,255,0.25);
-            border-radius: 12px;
-            padding: 10px;
-            box-sizing: border-box;
-            z-index: 999;
-            backdrop-filter: blur(4px);
-        }
-
-        .exclude-title {
-            color: #fff;
-            font-size: 14px;
-            margin-bottom: 8px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
-        }
-
-        #excludeContainer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            gap: 6px;
-        }
-
-        #excludeContainer label {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.25);
-            border-radius: 8px;
-            padding: 4px 6px;
-            color: white;
-            font-family: Arial, sans-serif;
-            font-weight: bold;
-            font-size: 11px;
-        }
-
-        #excludeContainer input[type="checkbox"] {
-            transform: scale(0.9);
-            cursor: pointer;
-            margin: 0;
-        }
-
-        #excludeContainer span {
-            padding: 2px 5px;
-            border-radius: 6px;
-            font-size: 10px;
-        }
 
         .bg-overlay {
             position: absolute;
@@ -479,18 +423,6 @@ flex-wrap:wrap;
                 padding: 8px;
             }
 
-            .exclude-title {
-                font-size: 12px;
-            }
-
-            #excludeContainer label {
-                font-size: 10px;
-                padding: 3px 5px;
-            }
-
-            #excludeContainer span {
-                font-size: 9px;
-            }
         }
     
 .layout-row{
@@ -766,7 +698,6 @@ Roll to generate code
 <script>
         let numDice = 1;
         let currentSpin = 0;
-        let excludedItems = [];
 
         const defaultValuePerMode = {
             color: 1,
@@ -826,77 +757,11 @@ Roll to generate code
             wheelElement.style.background = gradientString;
         }
 
-        function toggleExcludedItem(item, isChecked) {
-            const index = excludedItems.indexOf(item);
-
-            if (!isChecked && index === -1) {
-                excludedItems.push(item);
-            } else if (isChecked && index !== -1) {
-                excludedItems.splice(index, 1);
-            }
-        }
-
-        function updateExclusionControls(mode) {
-            const excludeContainer = document.getElementById("excludeContainer");
-            let items = mode === "color" ? validColors : validLightDark;
-
-            excludedItems = excludedItems.filter(item => items.includes(item));
-
-            const content = items.map(item => {
-                let text = item.toUpperCase();
-                let style = '';
-
-                if (mode === "color") {
-                    style = `style="color:${item}; font-weight:bold;"`;
-                } else {
-                    let segment = WHEEL_SEGMENT_OUTCOMES.find(s => s.name === item);
-                    let bgColor = segment ? segment.color : '#A0A0A0';
-                    let textColor = segment ? segment.textColor : '#000';
-
-                    if (item === 'dark') {
-                        bgColor = '#333';
-                        textColor = '#FFF';
-                    } else if (item === 'light') {
-                        bgColor = '#fff';
-                        textColor = '#000';
-                    } else {
-                        text = '3X';
-                        bgColor = '#A0A0A0';
-                        textColor = '#000';
-                    }
-
-                    style = `style="font-weight:bold; color:${textColor}; background-color:${bgColor}; border: 1px solid #000;"`;
-                }
-
-                const checkedAttr = !excludedItems.includes(item) ? 'checked' : '';
-                const inputId = `chk_${item}`;
-
-                return `
-                    <label for="${inputId}">
-                        <input id="${inputId}" data-item="${item}" type="checkbox" ${checkedAttr}>
-                        <span ${style}>${text}</span>
-                    </label>
-                `;
-            }).join('');
-
-            if (excludeContainer) {
-    excludeContainer.innerHTML = content;
-
-    document.querySelectorAll('#excludeContainer input[type="checkbox"]').forEach(cb => {
-        cb.addEventListener('change', function () {
-            toggleExcludedItem(this.dataset.item, this.checked);
-        });
-    });
-}
-}
-
         let rollColorResults = [];
 
         async function getRandomResult(mode) {
     let baseItems = mode === 'color' ? validColors : validLightDark;
-    const filteredItems = baseItems.filter(item => !excludedItems.includes(item));
-
-    const items = filteredItems.length > 0 ? filteredItems : baseItems;
+    const items = baseItems;
 
     // Every color is independently and uniformly selected.
     // No previous result influences the next result and there is no
@@ -913,13 +778,7 @@ Roll to generate code
 
 
         async function getRandomSegment() {
-    const possibleSegmentIndices = WHEEL_SEGMENT_OUTCOMES
-        .map((segment, index) => ({ index, name: segment.name }))
-        .filter(segment => !excludedItems.includes(segment.name));
-
-    if (possibleSegmentIndices.length === 0) {
-        return { index: 0, name: WHEEL_SEGMENT_OUTCOMES[0].name };
-    }
+    const possibleSegmentIndices = WHEEL_SEGMENT_OUTCOMES.map((segment, index) => ({ index, name: segment.name }));
 
     const randomIndex = await getProvablyFairRandom(possibleSegmentIndices.length);
     return possibleSegmentIndices[randomIndex];
@@ -1092,8 +951,6 @@ if (vc) vc.textContent = window.provablyFair.lastVerify;
                 resetWheel();
                 spinWheel();
             }
-
-            updateExclusionControls(mode);
             updateInfoContainer(isColorMode);
         }
 
@@ -1168,60 +1025,6 @@ if (vc) vc.textContent = window.provablyFair.lastVerify;
             toggleDisplayMode(document.getElementById("colorDice").value);
         };
 
-        document.addEventListener('keydown', function (e) {
-            const active = document.activeElement;
-            const tag = active ? active.tagName : null;
-
-            if (tag === 'INPUT' || tag === 'TEXTAREA' || (active && active.isContentEditable)) return;
-
-            const key = e.key.toLowerCase();
-            const mode = document.getElementById('colorDice').value;
-
-            if (mode === 'color') {
-                const map = { r: 'red', o: 'orange', y: 'gold', g: 'green', b: 'blue', p: 'purple' };
-                const item = map[key];
-                if (item) {
-                    const cb = document.getElementById(`chk_${item}`);
-                    if (cb) {
-                        cb.checked = !cb.checked;
-                        toggleExcludedItem(item, cb.checked);
-                    }
-                }
-            }
-
-            if (mode === 'lightOrDark') {
-                const map = { l: 'light', d: 'dark', g: 'gray' };
-                const item = map[key];
-                if (item) {
-                    const cb = document.getElementById(`chk_${item}`);
-                    if (cb) {
-                        cb.checked = !cb.checked;
-                        toggleExcludedItem(item, cb.checked);
-                    }
-                }
-            }
-
-            if (key === 'z') {
-                excludedItems = [];
-                const checkboxes = document.querySelectorAll('#excludeContainer input[type="checkbox"]');
-                checkboxes.forEach(cb => cb.checked = true);
-                updateExclusionControls(mode);
-            }
-
-            if (key === ' ') {
-                e.preventDefault();
-                document.getElementById('rollButton').click();
-            }
-        });
-    
-
-// Taste H blendet das Panel unten rechts ein/aus
-document.addEventListener("keydown", function (e) {
-    if (e.key.toLowerCase() === "h") {
-        const panel = document.querySelector(".exclude-panel");
-        panel.style.display = (panel.style.display === "none") ? "block" : "none";
-    }
-});
 
 
 document.getElementById("themeSelect").addEventListener("change",function(){
