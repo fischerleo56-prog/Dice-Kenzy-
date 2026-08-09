@@ -890,15 +890,39 @@ Roll to generate code
 }
 }
 
+        let lastColorResult = null;
+
         async function getRandomResult(mode) {
     let baseItems = mode === 'color' ? validColors : validLightDark;
     const filteredItems = baseItems.filter(item => !excludedItems.includes(item));
 
     const items = filteredItems.length > 0 ? filteredItems : baseItems;
 
-    const randomIndex = await getProvablyFairRandom(items.length);
+    // Colors stay random, but the previous color gets a small extra chance
+    // to repeat. This allows natural streaks (3x, 4x, sometimes 5x/6x)
+    // without forcing a predefined sequence or making one color dominate.
+    if (mode === 'color' && lastColorResult && items.includes(lastColorResult) && items.length > 1) {
+        const repeatRoll = await getProvablyFairRandom(100);
 
-    return items[randomIndex];
+        if (repeatRoll < 30) {
+            return lastColorResult;
+        }
+
+        const otherItems = items.filter(item => item !== lastColorResult);
+        const randomIndex = await getProvablyFairRandom(otherItems.length);
+        const result = otherItems[randomIndex];
+        lastColorResult = result;
+        return result;
+    }
+
+    const randomIndex = await getProvablyFairRandom(items.length);
+    const result = items[randomIndex];
+
+    if (mode === 'color') {
+        lastColorResult = result;
+    }
+
+    return result;
 }
 
         async function getRandomSegment() {
