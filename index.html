@@ -890,7 +890,7 @@ Roll to generate code
 }
 }
 
-        let lastColorResult = null;
+        let rollColorResults = [];
 
         async function getRandomResult(mode) {
     let baseItems = mode === 'color' ? validColors : validLightDark;
@@ -898,32 +898,30 @@ Roll to generate code
 
     const items = filteredItems.length > 0 ? filteredItems : baseItems;
 
-    // Colors stay random, but the previous color gets a small extra chance
-    // to repeat. This allows natural streaks (3x, 4x, sometimes 5x/6x)
-    // without forcing a predefined sequence or making one color dominate.
-    if (mode === 'color' && lastColorResult && items.includes(lastColorResult) && items.length > 1) {
+    // Same color-randomization principle as the reference dice:
+    // each die is independently random; with a small chance, one of the
+    // colors already rolled in this spin is reused. No predefined sequence.
+    if (mode === 'color' && rollColorResults.length > 0) {
         const repeatRoll = await getProvablyFairRandom(100);
 
-        if (repeatRoll < 30) {
-            return lastColorResult;
+        if (repeatRoll < 3) {
+            const previousIndex = await getProvablyFairRandom(rollColorResults.length);
+            const result = rollColorResults[previousIndex];
+            rollColorResults.push(result);
+            return result;
         }
-
-        const otherItems = items.filter(item => item !== lastColorResult);
-        const randomIndex = await getProvablyFairRandom(otherItems.length);
-        const result = otherItems[randomIndex];
-        lastColorResult = result;
-        return result;
     }
 
     const randomIndex = await getProvablyFairRandom(items.length);
     const result = items[randomIndex];
 
     if (mode === 'color') {
-        lastColorResult = result;
+        rollColorResults.push(result);
     }
 
     return result;
 }
+
 
         async function getRandomSegment() {
     const possibleSegmentIndices = WHEEL_SEGMENT_OUTCOMES
@@ -961,6 +959,7 @@ Roll to generate code
             playDiceRollSound();
             const resultDiv = document.getElementById("diceResultArea");
             resultDiv.innerHTML = "";
+rollColorResults = [];
 let verifyColors = [];
             for (let i = 0; i < numDice; i++) {
                 const block = document.createElement("div");
